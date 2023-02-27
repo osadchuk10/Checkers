@@ -53,3 +53,19 @@ flex-direction: column;
 .chekersBlue:hover{
     background-color: rgb(46, 46, 170);
 }
+.queenRed{
+    background-color: rgb(134, 7, 7);
+    border: 5px solid #dcd5d5;
+    border-radius: 50%;   
+}
+.queenRed:hover{
+    background-color: rgb(167, 43, 43);
+}
+.queenBlue{
+    background-color: rgb(15, 15, 99);
+    border: 5px solid #dcd5d5;
+    border-radius: 50%;  
+}
+.queenBlue:hover{
+    background-color: rgb(46, 46, 133);
+}

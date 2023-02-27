@@ -1,17 +1,3 @@
-// const arr=[];
-// const row=8;
-// const col=8;
-// for(let i=0;i<col;i++){
-//     for(let j=0;j<row;j++){
-//         if(i%2==0){
-
-//             arr.push("#");
-//         }else{
-
-//            arr.push("*");
-//         }
-//     }
-// }
 let neighboursChess = [];
 let currentChess = 0;
 let currentChessParent = 0;
@@ -59,13 +45,6 @@ function chessdesk() {
 }
 chessdesk();
 
-// function moveResItems() {
-//     const redItems = document.querySelectorAll('.chekers');
-//     const blackItems = document.querySelectorAll('.blackcell');
-//     blackItems.fiter(item => item.firstChild !==null)
-
-// }
-//moveResItems();
 function chessBlackClick(elem) {
     if (elem.children.length <= 0) {
         const id = Number(elem.id);
@@ -87,8 +66,6 @@ function chessBlackClick(elem) {
         })
 
     }
-
-
 }
 
 function getChess(elem) {
@@ -121,5 +98,4 @@ function getChess(elem) {
 
     })
     console.log(neighboursChess)
-    /* safas*/
 }
