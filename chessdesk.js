@@ -49,18 +49,18 @@ function chessBlackClick(elem) {
     if (elem.children.length <= 0) {
         const id = Number(elem.id);
         neighboursChess.forEach((sym) => {
-            if (sym == id) {
-                const removeElementId = Number(currentChessParent) + ((id - Number(currentChessParent)) / 2);
-                console.log(document.getElementById(removeElementId))
-                if (document.getElementById(removeElementId) != null) {
-                    console.log(document.getElementById(removeElementId))
-                    document.getElementById(removeElementId).innerHTML = '';
+            if (sym == id) {                                                                                    //condition with no strike
+                const removeElementId = Number(currentChessParent) + ((id - Number(currentChessParent)) / 2);   //new location of cell
+                console.log(document.getElementById(removeElementId))                                           //move my element with no strike
+                if (document.getElementById(removeElementId) != null) {                                         //condition for strike
+                    console.log(document.getElementById(removeElementId))                                       //move my element with strike
+                    document.getElementById(removeElementId).innerHTML = '';                                    //strike enemies element
                 }
                 elem.appendChild(document.getElementById('ch-' + currentChess))
-                if (document.getElementById('ch-' + currentChess).className == 'chekersBlue') {
-                    nextSpin = 'red';
+                if (document.getElementById('ch-' + currentChess).className == 'chekersBlue') {   //change color movement
+                    nextSpin = 'red';                                                             //change in red
                 } else {
-                    nextSpin = 'blue';
+                    nextSpin = 'blue';                                                            //change in blue
                 }
             }
         })
@@ -69,30 +69,28 @@ function chessBlackClick(elem) {
 }
 
 function getChess(elem) {
-    neighboursChess = [];
+    neighboursChess = [];       //array with possible cells
 
-    const id = elem.parentNode.id;
-    currentChess = elem.getAttribute('chessid');
-    currentChessParent = elem.parentNode.id;
+    const id = elem.parentNode.id;                                      
+    currentChess = elem.getAttribute('chessid');                              //current cell
+    currentChessParent = elem.parentNode.id;                                //current parent cells attribute
     neighbElem.forEach((pos) => {
-        if (elem.className == "chekersBlue" && pos < 0 && nextSpin == "blue") {
+        if (elem.className == "chekersBlue" && pos < 0 && nextSpin == "blue") {         //condition for blue
 
-            const ele = document.getElementById(Number(id) + Number(pos))
-            if (ele != null && ele.children.length <= 0) {
-                neighboursChess.push(Number(id) + Number(pos))
-            } else if (ele != null && ele.children.length > 0 && ele.children[0].className == "chekers") {
-
-                neighboursChess.push(Number(id) + pos * 2);
+            const cell = document.getElementById(Number(id) + Number(pos))               //new cell in the next move
+            if (cell != null && cell.children.length <= 0) {                            //condition if dosent exist checker in nearest position
+                neighboursChess.push(Number(id) + Number(pos))                          //create array with possible movable cells for blue
+            } else if (cell != null && cell.children.length > 0 && cell.children[0].className == "chekers") { //condition if exist checker in nearest position
+                neighboursChess.push(Number(id) + pos * 2);                               //create array with possible movable cells for blue
             }
-        } else if (elem.className == "chekers" && pos > 0 && nextSpin == 'red') {
 
-            const ele = document.getElementById(Number(id) + Number(pos))
-            if (ele != null && ele.children.length <= 0) {
-                neighboursChess.push(Number(id) + Number(pos))
-            } else if (ele != null && ele.children.length > 0 && ele.children[0].className == "chekersBlue") {
-                neighboursChess.push(Number(id) + pos * 2);
+        } else if (elem.className == "chekers" && pos > 0 && nextSpin == 'red') {       //condition for red
 
-
+            const cell = document.getElementById(Number(id) + Number(pos))              //new cell in the next move
+            if (cell != null && cell.children.length <= 0) {                            //condition if dosent exist checker in nearest position
+                neighboursChess.push(Number(id) + Number(pos))                          //create array with possible movable cells for red
+            } else if (cell != null && cell.children.length > 0 && cell.children[0].className == "chekersBlue") { //condition if exist checker in nearest position
+                neighboursChess.push(Number(id) + pos * 2);                              //create array with possible movable cells for red
             }
         }
 
