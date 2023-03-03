@@ -1,7 +1,8 @@
 let neighboursChess = [];
 let currentChess = 0;
 let currentChessParent = 0;
-let nextSpin = 'blue';
+let nextSpin = 'chekersBlue';
+let strikeChess = { "nextSpin": 'blue', "current": "blue" };
 const neighbElem = [-7, -9, 7, 9];
 function chessdesk() {
     const testArray = [0, 1, 2, 5, 6, 7];
@@ -49,21 +50,43 @@ function chessBlackClick(elem) {
     if (elem.children.length <= 0) {
         const id = Number(elem.id);
 
-        neighboursChess.forEach((sym) => {
-            if (sym == id) {                                                                                    //const runs in whole array
+        neighboursChess.forEach((symbol) => {
+
+            if (symbol.id == id) {                                                                                    //const runs in whole array
+                if (symbol.back && symbol.type == 'empty' && symbol.color == 'chekers') return;
+                if (!symbol.back && symbol.type == 'empty' && symbol.color == 'chekersBlue') return;
+
                 const removeElementId = Number(currentChessParent) + ((id - Number(currentChessParent)) / 2);   //new location of cell if strike ahead
-                const removeElementIdBack = Number(currentChessParent) - ((id - Number(currentChessParent)) / 2); //new location of cell if strike back
-                console.log(document.getElementById(removeElementId))                                           //element ahaed
-                console.log(document.getElementById(removeElementIdBack))                                       //element backward
-                if (document.getElementById(removeElementId) != null) {                                         //condition for removing
-                    console.log(document.getElementById(removeElementId))                                       //move my element
-                    document.getElementById(removeElementId).innerHTML = '';                                    //strike enemies element
+                const removedElement = document.getElementById(removeElementId);
+                if (removedElement !== null && removedElement.children[0]) {
+                    
+                    if (nextSpin != symbol.color && symbol.type != 'empty')
+                    if (symbol.type == 'strike' && symbol.color == 'chekersBlue' && removedElement.children[0].className == 'chekersBlue') return;
+                    if (symbol.type == 'strike' && symbol.color == 'chekers' && removedElement.children[0].className == 'chekers') return;
+                    if (symbol.type == 'strikeBack' && symbol.color == 'chekers' && removedElement.children[0].className == 'chekers') return;
+                    if (symbol.type == 'strikeBack' && symbol.color == 'chekersBlue' && removedElement.children[0].className == 'chekersBlue') return;
+                }
+                nextSpin
+
+                //element backward
+                if (removedElement != null) {                                         //condition for removing
+                    //move my element
+                    removedElement.innerHTML = '';                                    //strike enemies element
                 }
                 elem.appendChild(document.getElementById('ch-' + currentChess))
                 if (document.getElementById('ch-' + currentChess).className == 'chekersBlue') {   //change color movement
-                    nextSpin = 'red';                                                             //change in red
-                } else {
-                    nextSpin = 'blue';                                                            //change in blue
+                    if (removedElement != null) {
+                        strikeChess = { "nextSpin": 'blue', "current": "blue" };
+                    } else {
+                        strikeChess = { "nextSpin": 'red', "current": "blue" };
+                    }
+                    //change in red
+                } else if (document.getElementById('ch-' + currentChess).className == 'chekers') {
+                    if (removedElement != null) {
+                        strikeChess = { "nextSpin": 'red', "current": "red" };
+                    } else {
+                        strikeChess = { "nextSpin": 'blue', "current": "red" };
+                    }                                                          //change in blue
                 }
             }
         })
@@ -75,40 +98,31 @@ function getChess(elem) {
     neighboursChess = [];       //array with possible cells
 
     const id = elem.parentNode.id;
+    let chessData = {}
     currentChess = elem.getAttribute('chessid');                              //current cell
     currentChessParent = elem.parentNode.id;                                //current parent cells attribute
     neighbElem.forEach((pos) => {
-        if (elem.className == "chekersBlue" && pos < 0 && nextSpin == "blue") {         //condition for blue
+        //condition for blue
+        const cell = document.getElementById(Number(id) + Number(pos))               //new cell in the next move go ahead
 
-            const cell = document.getElementById(Number(id) + Number(pos))               //new cell in the next move go ahead
-            console.log(cell)
-            const cellBack = document.getElementById(Number(id) - Number(pos))           //new cell in the next move go backward
-            console.log(cellBack)
-            if (cell != null && cell.children.length <= 0) {                            //condition if dosent exist checker in nearest position
-                neighboursChess.push(Number(id) + Number(pos))                          //create array with possible movable cells for blue
-            } else if (cell != null && cell.children.length > 0 && cell.children[0].className == "chekers") { //condition if exist checker in nearest position
-                neighboursChess.push(Number(id) + pos * 2);                               //create array with possible movable cells for blue
-            }
-            if (cellBack != null && cellBack.children.length > 0 && cellBack.children[0].className == "chekers") {// write value in array for possibility to strike back
-                neighboursChess.push(Number(id) - pos * 2);
-            }
+        const cellBack = document.getElementById(Number(id) - Number(pos))           //new cell in the next move go backward
 
-        } else if (elem.className == "chekers" && pos > 0 && nextSpin == 'red') {       //condition for red
+        if (cell != null && cell.children.length <= 0 && Number(id) + Number(pos) < 64) {                            //condition if dosent exist checker in nearest position
+            chessData = { 'color': elem.className, 'type': 'empty', 'id': Number(id) + Number(pos), 'back': pos < 0 }
+            neighboursChess.push(chessData)
+            //create array with possible movable cells for blue
+        } else if (cell != null && cell.children.length > 0 && Number(id) + pos * 2 < 64) { //condition if exist checker in nearest position
 
-            const cell = document.getElementById(Number(id) + Number(pos))              //new cell in the next move
-            const cellBack = document.getElementById(Number(id) - Number(pos))          //new cell in the next move go backward
-            if (cell != null && cell.children.length <= 0) {                            //condition if dosent exist checker in nearest position
-                neighboursChess.push(Number(id) + Number(pos))                          //create array with possible movable cells for red
-                console.log(neighboursChess);
-            } else if (cell != null && cell.children.length > 0 && cell.children[0].className == "chekersBlue") { //condition if exist checker in nearest position
-                neighboursChess.push(Number(id) + pos * 2);                              //create array with possible movable cells for red
-                console.log(neighboursChess);
-            }
-            if (cellBack != null && cellBack.children.length > 0 && cellBack.children[0].className == "chekersBlue") {// write value in array for possibility to strike backgi
-                neighboursChess.push(Number(id) - pos * 2);
-                console.log(neighboursChess);
-            }
+            chessData = { 'color': elem.className, 'type': 'strike', 'id': Number(id) + pos * 2, 'back': pos < 0 }
+            neighboursChess.push(chessData)
+            //create array with possible movable cells for blue
         }
+        if (cellBack != null && cellBack.children.length > 0 && Number(id) - pos * 2 <= 0 && Number(id) - pos * 2 < 64) {// write value in array for possibility to strike back
+            chessData = { 'color': cellBack.children[0].className, 'type': 'strikeBack', 'id': Number(id) - pos * 2, 'back': pos < 0 }
+            neighboursChess.push(chessData)
+        }
+
+
 
     })
     console.log(neighboursChess)
