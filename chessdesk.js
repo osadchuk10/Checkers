@@ -58,13 +58,14 @@ function chessBlackClick(elem) {
 
                 const removeElementId = Number(currentChessParent) + ((id - Number(currentChessParent)) / 2);   //new location of cell if strike ahead
                 const removedElement = document.getElementById(removeElementId);
-                if (removedElement !== null && removedElement.children[0]) {
-                    
+                
+                if (removedElement !== null ) {
+                    const childEl=removedElement.children[0].className;
                     if (nextSpin != symbol.color && symbol.type != 'empty')
-                    if (symbol.type == 'strike' && symbol.color == 'chekersBlue' && removedElement.children[0].className == 'chekersBlue') return;
-                    if (symbol.type == 'strike' && symbol.color == 'chekers' && removedElement.children[0].className == 'chekers') return;
-                    if (symbol.type == 'strikeBack' && symbol.color == 'chekers' && removedElement.children[0].className == 'chekers') return;
-                    if (symbol.type == 'strikeBack' && symbol.color == 'chekersBlue' && removedElement.children[0].className == 'chekersBlue') return;
+                    if (symbol.type == 'strike' && symbol.color == 'chekersBlue' && childEl == 'chekersBlue') return;
+                    if (symbol.type == 'strike' && symbol.color == 'chekers' && childEl == 'chekers') return;
+                    if (symbol.type == 'strikeBack' && symbol.color == 'chekers' && childEl == 'chekers') return;
+                    if (symbol.type == 'strikeBack' && symbol.color == 'chekersBlue' && childEl == 'chekersBlue') return;
                 }
                 nextSpin
 
