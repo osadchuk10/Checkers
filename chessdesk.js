@@ -4,6 +4,8 @@ let currentChessParent = 0;
 let nextSpin = { 'color': 'chekersBlue', 'id': undefined };
 //let strikeChess = { "nextSpin": 'blue', "current": "blue" };
 const neighbElem = [-7, -9, 7, 9];
+const cellsBlack = [];
+const queenArray = [];
 function chessdesk() {
     const testArray = [0, 1, 2, 5, 6, 7];
     const cell = document.getElementById("cells");
@@ -18,6 +20,8 @@ function chessdesk() {
                 black.id = 8 * i + j;
                 black.setAttribute('onclick', 'chessBlackClick(this)')
                 cell.appendChild(black)
+                cellsBlack.push(black.id)
+
                 testArray.forEach(element => {
                     if (i == element) {
                         let checkers = document.createElement("div");
@@ -62,37 +66,46 @@ function chessBlackClick(elem) {
                 const removedElement = document.getElementById(removeElementId);
                 if (document.getElementById('ch-' + currentChess.getAttribute('chessid')).className == 'chekersBlue') {   //change color movement
                     nextSpin.color = "chekers";
-                    nextSpin.id= undefined;
+                    nextSpin.id = undefined;
                     //change in red
                 } else {
                     nextSpin.color = "chekersBlue";
-                    nextSpin.id= undefined;
+                    nextSpin.id = undefined;
                     //change in blue
+
                 }
+                console.log("nextSpin", nextSpin)
                 if (removedElement !== null) {
                     const childEl = removedElement.children[0].className;
+
 
                     if (symbol.type == 'strike' && symbol.color == 'chekersBlue' && childEl == 'chekersBlue') return;
                     if (symbol.type == 'strike' && symbol.color == 'chekers' && childEl == 'chekers') return;
                     if (symbol.type == 'strikeBack' && symbol.color == 'chekers' && childEl == 'chekers') return;
                     if (symbol.type == 'strikeBack' && symbol.color == 'chekersBlue' && childEl == 'chekersBlue') return;
+                    elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
+                    removedElement.innerHTML = '';
+                    nextSpin.id = undefined;
 
                     this.getChess(document.getElementById('ch-' + currentChess.getAttribute('chessid')));
-                
-                    neighboursChess.forEach((sym) => {
-                        nextSpin.id = currentChess.getAttribute('chessid');
 
-                        if (sym.color != sym.naighbour && sym.type != 'empty' && nextSpin.id!=undefined) {
+                    neighboursChess.forEach((sym) => {
+
+
+                        if (sym.color != sym.naighbour && sym.type != 'empty') {
                             nextSpin.id = currentChess.getAttribute('chessid');
                             nextSpin.color = symbol.color;
-                            console.log(nextSpin.color);
+
+                            console.log("sadf", nextSpin.color);
                         }
                     })
-                    removedElement.innerHTML = '';
+
+
+                } else {
+                    elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
 
                 }
 
-                elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
 
             }
         })
@@ -101,6 +114,10 @@ function chessBlackClick(elem) {
 }
 
 function getChess(elem) {
+    console.log(nextSpin.id)
+    if (nextSpin.id != undefined && nextSpin.id != currentChess.id) {
+        return
+    }
     neighboursChess = [];
     let chessData = {}
 
@@ -112,23 +129,27 @@ function getChess(elem) {
     neighbElem.forEach((pos) => {
         //condition for blue
         const cell = document.getElementById(Number(id) + Number(pos))               //new cell in the next move go ahead
+        //const 
 
         const cellBack = document.getElementById(Number(id) - Number(pos))           //new cell in the next move go backward
 
-        if (cell != null && cell.children.length <= 0 && Number(id) + Number(pos) < 64) {                            //condition if dosent exist checker in nearest position
+        if (cell != null && cell.children.length <= 0 && Number(id) + Number(pos) < 64 && Number(id) + Number(pos) >= 0) {                            //condition if dosent exist checker in nearest position
             chessData = { 'color': elem.className, 'type': 'empty', 'id': Number(id) + Number(pos), 'back': pos < 0, 'naighbour': '' }
             neighboursChess.push(chessData)
             //create array with possible movable cells for blue
-        } else if (cell != null && cell.children.length > 0 && Number(id) + pos * 2 < 64) { //condition if exist checker in nearest position
+        } else if (cell != null && cell.children.length > 0 && Number(id) + pos * 2 < 64 && Number(id) + pos * 2 > 0) { //condition if exist checker in nearest position
 
-            chessData = { 'color': elem.className, 'type': 'strike', 'id': Number(id) + pos * 2, 'back': pos < 0, 'naighbour': cell.children[0].className }
-            neighboursChess.push(chessData)
+            if (document.getElementById(Number(id) + pos * 2) != undefined && document.getElementById(Number(id) + pos * 2).children.length === 0) {
+                chessData = { 'color': elem.className, 'type': 'strike', 'id': Number(id) + pos * 2, 'back': pos < 0, 'naighbour': cell.children[0].className }
+                neighboursChess.push(chessData)
+            }
+
             //create array with possible movable cells for blue
-        }
-        if (cellBack != null && cellBack.children.length > 0 && Number(id) - pos * 2 <= 0 && Number(id) - pos * 2 < 64) {// write value in array for possibility to strike back
+        } else if (cellBack != null && cellBack.children.length > 0 && Number(id) - pos * 2 <= 0 && Number(id) - pos * 2 < 64) {// write value in array for possibility to strike back
             chessData = { 'color': cellBack.children[0].className, 'type': 'strikeBack', 'id': Number(id) - pos * 2, 'back': pos < 0, 'naighbour': cellBack.children[0].className }
             neighboursChess.push(chessData)
         }
+
 
 
 
