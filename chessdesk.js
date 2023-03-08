@@ -3,6 +3,7 @@ let currentChess = 0;
 let currentChessParent = 0;
 let nextSpin = { 'color': 'chekersBlue', 'id': undefined };
 const neighbElem = [-7, -9, 7, 9];
+let queenArray = [];
 function chessdesk() {
     const testArray = [0, 1, 2, 5, 6, 7];
     const cell = document.getElementById("cells");
@@ -116,24 +117,36 @@ function getChess(elem) {
             chessData = { 'color': cellBack.children[0].className, 'type': 'strikeBack', 'id': Number(id) - pos * 2, 'back': pos < 0, 'naighbour': cellBack.children[0].className }
             neighboursChess.push(chessData)
         }
-        let queenArray = [];
 
-        if (currentChess.className == "queenBlue" || currentChess.className == "queenRed") {
-            neighbElem.forEach((el) => {
-                const cellQueen = document.getElementById(Number(id) + Number(el))
-                for (let i = 0; elem.parentNode.className != "blackcell"; i += Number(el)) {
-                    if (cellQueen != null) {
-                        queenArray.push(Number(cellQueen.parentNode.id));
-                    }
-                    console.log(cellQueen)
-                }
-                console.log(queenArray)
 
-            })
-        }
+        // if (currentChess.className== "queenBlue" || currentChess.className == "queenRed") {
+        //     neighbElem.forEach((el)  => {
+        //         let cellQueen = document.getElementById(Number(id) + Number(el))
+        //         for (let i = 0; elem.parentNode.className != "blackcell"; i += Number(el)) {
+        //             cellQueen=document.getElementById(Number(id) + Number(i))
+        //             if (cellQueen == null) {
+        //                 queenArray.push(Number(id) + Number(i));
+        //             }
+        //             console.log(cellQueen)
+        //         }
+        //         console.log(queenArray)
+
+        //     })
+        // }
 
 
     })
+    let queenArray = [];
+    neighbElem.forEach((el) => {
+        
+        for (let i = 1; i < 8; i++) {
+            let queenElementId = document.getElementById(el * i + Number(id));
+            if (el * i + Number(id) >= 0 && el * i + Number(id) <= 63 && queenElementId != null && queenElementId.children.length==0) {
+                queenArray.push(el * i + Number(id));
+            }
+        }
+    })
+    console.log(queenArray)
 
 
     console.log(neighboursChess)
