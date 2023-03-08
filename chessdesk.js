@@ -3,7 +3,6 @@ let currentChess = 0;
 let currentChessParent = 0;
 let nextSpin = { 'color': 'chekersBlue', 'id': undefined };
 const neighbElem = [-7, -9, 7, 9];
-const queenArray = [];
 function chessdesk() {
     const testArray = [0, 1, 2, 5, 6, 7];
     const cell = document.getElementById("cells");
@@ -81,6 +80,12 @@ function chessBlackClick(elem) {
                     elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
                 }
             }
+            if (symbol.color == 'chekersBlue' && elem.id <= 8) {
+                currentChess.className = 'queenBlue'
+            }
+            if (symbol.color == 'chekers' && elem.id >= 56) {
+                currentChess.className = 'queenRed'
+            }
         })
     }
 }
@@ -92,6 +97,7 @@ function getChess(elem) {
     neighboursChess = [];
     let chessData = {}
     neighboursChess = [];
+    console.log(elem);
     const id = elem.parentNode.id;
     currentChess = elem;
     currentChessParent = elem.parentNode.id;
@@ -110,6 +116,25 @@ function getChess(elem) {
             chessData = { 'color': cellBack.children[0].className, 'type': 'strikeBack', 'id': Number(id) - pos * 2, 'back': pos < 0, 'naighbour': cellBack.children[0].className }
             neighboursChess.push(chessData)
         }
+        let queenArray = [];
+
+        if (currentChess.className == "queenBlue" || currentChess.className == "queenRed") {
+            neighbElem.forEach((el) => {
+                const cellQueen = document.getElementById(Number(id) + Number(el))
+                for (let i = 0; elem.parentNode.className != "blackcell"; i += Number(el)) {
+                    if (cellQueen != null) {
+                        queenArray.push(Number(cellQueen.parentNode.id));
+                    }
+                    console.log(cellQueen)
+                }
+                console.log(queenArray)
+
+            })
+        }
+
+
     })
+
+
     console.log(neighboursChess)
 }
