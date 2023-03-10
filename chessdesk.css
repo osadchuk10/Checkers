@@ -1,14 +1,22 @@
 #desk {
-background-color: rgb(235, 237, 238);
-width: 640px;
-height: 640px;
-border: 10px solid black;
-margin: 20px auto;
-padding: 100px;
-display: flex;
-justify-content: center;
-align-items: center;
-flex-direction: column;
+    background-color: rgb(235, 237, 238);
+    width: 640px;
+    height: 640px;
+    border: 10px solid black;
+    margin: 20px auto;
+    padding: 100px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    
+}
+#redd{
+    color: rgb(228, 99, 99);
+}
+#bluee{
+    color: rgb(95, 95, 236);
 }
 #cells{
     background-color: rgb(243, 78, 78);

@@ -4,6 +4,18 @@ let currentChessParent = 0;
 let nextSpin = { 'color': 'chekersBlue', 'id': undefined };
 const neighbElem = [-7, -9, 7, 9];
 let queenArray = [];
+function move() {
+    const a = document.getElementById("bluee");
+    const b = document.getElementById("redd");
+    if (nextSpin.color == "chekersBlue") {
+        a.innerHTML = "Blue move";
+        b.innerHTML = "";
+    } else if (nextSpin.color == "chekers") {
+        a.innerHTML = "";
+        b.innerHTML = "Red move";
+    }
+}
+move();
 function chessdesk() {
     const testArray = [0, 1, 2, 5, 6, 7];
     const cell = document.getElementById("cells");
@@ -87,8 +99,13 @@ function chessBlackClick(elem) {
             if (symbol.color == 'chekers' && elem.id >= 56) {
                 currentChess.className = 'queenRed'
             }
+            //queenData.forEach((symbol)=>{})
+
+
         })
+
     }
+    move();
 }
 function getChess(elem) {
     console.log(nextSpin.id)
@@ -118,34 +135,25 @@ function getChess(elem) {
             neighboursChess.push(chessData)
         }
 
-
-        // if (currentChess.className== "queenBlue" || currentChess.className == "queenRed") {
-        //     neighbElem.forEach((el)  => {
-        //         let cellQueen = document.getElementById(Number(id) + Number(el))
-        //         for (let i = 0; elem.parentNode.className != "blackcell"; i += Number(el)) {
-        //             cellQueen=document.getElementById(Number(id) + Number(i))
-        //             if (cellQueen == null) {
-        //                 queenArray.push(Number(id) + Number(i));
-        //             }
-        //             console.log(cellQueen)
-        //         }
-        //         console.log(queenArray)
-
-        //     })
-        // }
-
-
     })
     let queenArray = [];
-    neighbElem.forEach((el) => {
-        
-        for (let i = 1; i < 8; i++) {
-            let queenElementId = document.getElementById(el * i + Number(id));
-            if (el * i + Number(id) >= 0 && el * i + Number(id) <= 63 && queenElementId != null && queenElementId.children.length==0) {
-                queenArray.push(el * i + Number(id));
+    let queenData = {};
+    if (elem.className == "queenBlue" || elem.className == "queenRed") {
+        neighbElem.forEach((el, index) => {
+
+            for (let i = 1; i < 8; i++) {
+
+                let queenElementId = document.getElementById(el * i + Number(id));
+                if (el * i + Number(id) >= 0 && el * i + Number(id) <= 63 && queenElementId != null) {
+                    queenData = { "color": elem.className, "id": el * i + Number(id), "diagonal": index };
+                    queenArray.push(queenData);
+                }
             }
-        }
-    })
+        })
+    }
+
+
+
     console.log(queenArray)
 
 
