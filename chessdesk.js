@@ -57,14 +57,25 @@ function chessdesk() {
 }
 chessdesk();
 function queenFunction(elem) {
-    console.log("Yeah!!!!")
     const id = Number(elem.id);
     queenArray.forEach((symbol) => {
         if (symbol.id == id) {
-            const moveQueen = Number(currentChessParent) + ((id - Number(currentChessParent)));
-            const movedQueen = document.getElementById(moveQueen);
+            for (let i = 0; i < 4; i++) {
+                let removeElementId = id + neighbElem[i];
+                let removeElement = document.getElementById(removeElementId);
+                console.log(removeElement)
+                queenArray.forEach((x) => {
+                    if (removeElement.children.length > 0) {
+                        if (symbol.color == "queenBlue" && x.id == removeElementId && removeElement.children[0].className != "chekersBlue" ) {
+                            removeElement.innerHTML = "";
+                        } if (symbol.color == "queenRed" && x.id == removeElementId && removeElement.children[0].className != "chekers" ) {
+                            removeElement.innerHTML = "";
+                        }
+                    }
+                }) 
+            }
+
             elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
-            console.log(movedQueen);
         }
     })
 }
@@ -116,7 +127,6 @@ function chessBlackClick(elem) {
             if (symbol.color == 'chekers' && elem.id >= 56) {
                 currentChess.className = 'queenRed'
             }
-
         })
     }
     move();
@@ -151,10 +161,9 @@ function getChess(elem) {
 
 
     if (elem.className == "queenBlue" || elem.className == "queenRed") {
-queenArray=[];
+        queenArray = [];
         neighbElem.forEach((el, index) => {
             for (let i = 1; i < 8; i++) {
-                let nextElemOnBlack = document.getElementById(el * i + Number(id) * 2);
                 let queenElementId = document.getElementById(el * i + Number(id));
                 if (el * i + Number(id) >= 0 && el * i + Number(id) <= 63 && queenElementId != null) {
                     queenData = { "color": elem.className, "id": el * i + Number(id), "diagonal": index };
