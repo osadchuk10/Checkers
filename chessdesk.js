@@ -3,15 +3,17 @@ let currentChess = 0;
 let currentChessParent = 0;
 let nextSpin = { 'color': 'chekersBlue', 'id': undefined };
 const neighbElem = [-7, -9, 7, 9];
+
 let queenArray = [];
+let queenData = {};
 function move() {
     const a = document.getElementById("bluee");
     const b = document.getElementById("redd");
     if (nextSpin.color == "chekersBlue") {
         a.innerHTML = "Blue move";
-        b.innerHTML = "";
+        b.innerHTML = "Red wait";
     } else if (nextSpin.color == "chekers") {
-        a.innerHTML = "";
+        a.innerHTML = "Blue wait";
         b.innerHTML = "Red move";
     }
 }
@@ -54,7 +56,23 @@ function chessdesk() {
     }
 }
 chessdesk();
+function queenFunction(elem) {
+    console.log("Yeah!!!!")
+    const id = Number(elem.id);
+    queenArray.forEach((symbol) => {
+        if (symbol.id == id) {
+            const moveQueen = Number(currentChessParent) + ((id - Number(currentChessParent)));
+            const movedQueen = document.getElementById(moveQueen);
+            elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
+            console.log(movedQueen);
+        }
+    })
+}
 function chessBlackClick(elem) {
+
+    if (currentChess.className == 'queenBlue' || currentChess.className == 'queenRed') {
+        queenFunction(elem); return;
+    }
     if (nextSpin.color !== currentChess.className) return;
     if (elem.children.length <= 0) {
         const id = Number(elem.id);
@@ -86,7 +104,6 @@ function chessBlackClick(elem) {
                         if (sym.color != sym.naighbour && sym.type != 'empty') {
                             nextSpin.id = currentChess.getAttribute('chessid');
                             nextSpin.color = symbol.color;
-                            console.log("sadf", nextSpin.color);
                         }
                     })
                 } else {
@@ -99,11 +116,8 @@ function chessBlackClick(elem) {
             if (symbol.color == 'chekers' && elem.id >= 56) {
                 currentChess.className = 'queenRed'
             }
-            //queenData.forEach((symbol)=>{})
-
 
         })
-
     }
     move();
 }
@@ -114,7 +128,6 @@ function getChess(elem) {
     }
     neighboursChess = [];
     let chessData = {}
-    neighboursChess = [];
     console.log(elem);
     const id = elem.parentNode.id;
     currentChess = elem;
@@ -134,28 +147,24 @@ function getChess(elem) {
             chessData = { 'color': cellBack.children[0].className, 'type': 'strikeBack', 'id': Number(id) - pos * 2, 'back': pos < 0, 'naighbour': cellBack.children[0].className }
             neighboursChess.push(chessData)
         }
-
     })
-    let queenArray = [];
-    let queenData = {};
+
+
     if (elem.className == "queenBlue" || elem.className == "queenRed") {
+queenArray=[];
         neighbElem.forEach((el, index) => {
-
             for (let i = 1; i < 8; i++) {
-
+                let nextElemOnBlack = document.getElementById(el * i + Number(id) * 2);
                 let queenElementId = document.getElementById(el * i + Number(id));
                 if (el * i + Number(id) >= 0 && el * i + Number(id) <= 63 && queenElementId != null) {
                     queenData = { "color": elem.className, "id": el * i + Number(id), "diagonal": index };
                     queenArray.push(queenData);
                 }
+
             }
+
         })
     }
-
-
-
     console.log(queenArray)
-
-
     console.log(neighboursChess)
 }
