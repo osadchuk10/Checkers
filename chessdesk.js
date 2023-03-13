@@ -3,7 +3,8 @@ let currentChess = 0;
 let currentChessParent = 0;
 let nextSpin = { 'color': 'chekersBlue', 'id': undefined };
 const neighbElem = [-7, -9, 7, 9];
-
+let arrayForStrike=[];
+let strikeData={};
 let queenArray = [];
 let queenData = {};
 function move() {
@@ -59,24 +60,35 @@ chessdesk();
 function queenFunction(elem) {
     const id = Number(elem.id);
     queenArray.forEach((symbol) => {
-        if (symbol.id == id) {
-            for (let i = 0; i < 4; i++) {
-                let removeElementId = id + neighbElem[i];
-                let removeElement = document.getElementById(removeElementId);
-                console.log(removeElement)
-                queenArray.forEach((x) => {
-                    if (removeElement.children.length > 0) {
-                        if (symbol.color == "queenBlue" && x.id == removeElementId && removeElement.children[0].className != "chekersBlue" ) {
-                            removeElement.innerHTML = "";
-                        } if (symbol.color == "queenRed" && x.id == removeElementId && removeElement.children[0].className != "chekers" ) {
-                            removeElement.innerHTML = "";
-                        }
-                    }
-                }) 
-            }
+        if (symbol.id == id && symbol!=null) {
 
+                // let removeElementId = id + neighbElem[i];
+                // let removeElement = document.getElementById(removeElementId);
+                // queenArray.forEach((x) => {
+                //     if (removeElement.children.length > 0) {
+                //         if (symbol.color == "queenBlue" && x.id == removeElementId && removeElement.children[0].className != "chekersBlue" ) {
+                //             removeElement.innerHTML = "";
+                //         } if (symbol.color == "queenRed" && x.id == removeElementId && removeElement.children[0].className != "chekers" ) {
+                //             removeElement.innerHTML = "";
+                //         }
+                //     }
+                // }) 
+                // // queenArray.forEach((x)=>{
+                // //     let line =[];
+                // //     if (x.diagonal==i){
+                // //         line=queenData.id;
+                // //         console.log(line);
+                // //     }
+                // // })
+                
+                    // let arrayForStrike=[];
+                    // let strikeElement=document.getElementById(id);
+                    // arrayForStrike.push(strikeElement);
+                    // console.log(arrayForStrike);
+                
+
+            }
             elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
-        }
     })
 }
 function chessBlackClick(elem) {
@@ -168,12 +180,17 @@ function getChess(elem) {
                 if (el * i + Number(id) >= 0 && el * i + Number(id) <= 63 && queenElementId != null) {
                     queenData = { "color": elem.className, "id": el * i + Number(id), "diagonal": index };
                     queenArray.push(queenData);
+                    if(queenElementId.children.length>0){
+                        strikeData={"color":queenElementId.children[0].className,"id": el * i + Number(id),"diagonal": index, "nextAfter":el * (i+1) + Number(id)}
+                        arrayForStrike.push(strikeData);
+                    }
                 }
 
             }
 
         })
     }
-    console.log(queenArray)
-    console.log(neighboursChess)
+    console.log(queenArray);
+    console.log(arrayForStrike);
+    console.log(neighboursChess);
 }
