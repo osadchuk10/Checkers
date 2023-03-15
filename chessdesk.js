@@ -65,7 +65,8 @@ function queenFunction(elem) {
             arrayForStrike.forEach((x) => {
                 let removeElementId = x.id;
                 let removeElement = document.getElementById(removeElementId);
-                if (symbol.diagonal == x.diagonal && x.nextAfter.children <= 0) {
+                console.log(x.nextAfter.children.length)
+                if (symbol.diagonal == x.diagonal && x.nextAfter.children.length <= 0) {
                     if (symbol.color == "queenBlue" && x.color != "chekersBlue") {
                         removeElement.innerHTML = "";
 
