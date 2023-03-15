@@ -65,16 +65,20 @@ function queenFunction(elem) {
             arrayForStrike.forEach((x) => {
                 let removeElementId = x.id;
                 let removeElement = document.getElementById(removeElementId);
-                console.log(removeElement);
-
-                if (symbol.diagonal == x.diagonal && x.nextAfter.children.length <= 0) {
+                if (symbol.diagonal == x.diagonal && x.nextAfter.children <= 0) {
                     if (symbol.color == "queenBlue" && x.color != "chekersBlue") {
                         removeElement.innerHTML = "";
 
                     } if (symbol.color == "queenRed" &&  x.color != "chekers" ) {
                         removeElement.innerHTML = "";
                     }
-                } else { return }
+                    
+                }else if(symbol.id==x.nextAfterId){
+                    removeElement.innerHTML = "";
+                }
+                console.log(strikeData.nextAfter);
+                console.log(symbol.id);
+                console.log(x.nextAfterId);
             })
         }
         elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
@@ -171,7 +175,7 @@ function getChess(elem) {
                     queenData = { "color": elem.className, "id": el * i + Number(id), "diagonal": index };
                     queenArray.push(queenData);
                     if (queenElementId.children.length > 0) {
-                        strikeData = { "color": queenElementId.children[0].className, "id": el * i + Number(id), "diagonal": index, "nextAfter": document.getElementById(el * (i + 1) + Number(id)) }
+                        strikeData = { "color": queenElementId.children[0].className, "id": el * i + Number(id), "diagonal": index, "nextAfter": document.getElementById(el * (i + 1) + Number(id)),"nextAfterId":el * (i + 1) + Number(id) }
                         if(strikeData.nextAfter!=null){
                         arrayForStrike.push(strikeData);
                         }
