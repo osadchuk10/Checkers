@@ -70,11 +70,11 @@ function queenFunction(elem) {
                     if (symbol.color == "queenBlue" && x.color != "chekersBlue") {
                         removeElement.innerHTML = "";
 
-                    } if (symbol.color == "queenRed" &&  x.color != "chekers" ) {
+                    } if (symbol.color == "queenRed" && x.color != "chekers") {
                         removeElement.innerHTML = "";
                     }
-                    
-                }else if(symbol.id==x.nextAfterId){
+
+                } else if (symbol.id == x.nextAfterId) {
                     removeElement.innerHTML = "";
                 }
                 console.log(strikeData.nextAfter);
@@ -99,7 +99,7 @@ function chessBlackClick(elem) {
                 if (!symbol.back && symbol.type == 'empty' && symbol.color == 'chekersBlue') return;
                 const removeElementId = Number(currentChessParent) + ((id - Number(currentChessParent)) / 2);
                 const removedElement = document.getElementById(removeElementId);
-                if (document.getElementById('ch-' + currentChess.getAttribute('chessid')).className == 'chekersBlue') {
+                if (document.getElementById('ch-' + currentChess.getAttribute('chessid')).className == 'chekersBlue' || document.getElementById('ch-' + currentChess.getAttribute('chessid')).className == 'queenBlue') {
                     nextSpin.color = "chekers";
                     nextSpin.id = undefined;
                 } else {
@@ -122,6 +122,21 @@ function chessBlackClick(elem) {
                             nextSpin.id = currentChess.getAttribute('chessid');
                             nextSpin.color = symbol.color;
                         }
+                        arrayForStrike.forEach((pos) => {
+                            if (currentChess.className == "queenBlue"  ) {
+                                if (pos.element.children[0].className=="chekers"&&pos.nextAfter.children[0].length<=0) {
+                                    nextSpin.id = currentChess.getAttribute('chessid');
+                                    nextSpin.color = symbol.color;
+                                }
+                            }else if(currentChess.className == "queenRed"){
+                                if (pos.element.children[0].className=="chekersBlue"&&pos.nextAfter.children[0].length<=0) {
+                                    nextSpin.id = currentChess.getAttribute('chessid');
+                                    nextSpin.color = symbol.color;
+                                }
+                            }
+                        }
+
+                        )
                     })
                 } else {
                     elem.appendChild(document.getElementById('ch-' + currentChess.getAttribute('chessid')))
@@ -129,6 +144,13 @@ function chessBlackClick(elem) {
             }
             if (symbol.color == 'chekersBlue' && elem.id <= 8) {
                 currentChess.className = 'queenBlue'
+                if (document.getElementById('ch-' + currentChess.getAttribute('chessid')).className == 'chekersBlue') {
+                    nextSpin.color = "chekers";
+                    nextSpin.id = undefined;
+                } else {
+                    nextSpin.color = "chekersBlue";
+                    nextSpin.id = undefined;
+                }
             }
             if (symbol.color == 'chekers' && elem.id >= 56) {
                 currentChess.className = 'queenRed'
@@ -168,7 +190,7 @@ function getChess(elem) {
 
     if (elem.className == "queenBlue" || elem.className == "queenRed") {
         queenArray = [];
-        arrayForStrike=[];
+        arrayForStrike = [];
         neighbElem.forEach((el, index) => {
             for (let i = 1; i < 8; i++) {
                 let queenElementId = document.getElementById(el * i + Number(id));
@@ -176,9 +198,9 @@ function getChess(elem) {
                     queenData = { "color": elem.className, "id": el * i + Number(id), "diagonal": index };
                     queenArray.push(queenData);
                     if (queenElementId.children.length > 0) {
-                        strikeData = { "color": queenElementId.children[0].className, "id": el * i + Number(id), "diagonal": index, "nextAfter": document.getElementById(el * (i + 1) + Number(id)),"nextAfterId":el * (i + 1) + Number(id) }
-                        if(strikeData.nextAfter!=null){
-                        arrayForStrike.push(strikeData);
+                        strikeData = { "color": queenElementId.children[0].className, "element": queenElementId, "elementid": el * i + Number(id), "diagonal": index, "nextAfter": document.getElementById(el * (i + 1) + Number(id)), "nextAfterId": el * (i + 1) + Number(id) }
+                        if (strikeData.nextAfter != null) {
+                            arrayForStrike.push(strikeData);
                         }
                     }
                 }
